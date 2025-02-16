@@ -22,7 +22,7 @@ RECORD_TIME = 10
 
 data = []
 
-# Define the function to calculate the angle between three points
+# This is the function to calculate the angle between three points
 def calculate_angle(point1, point2, point3):
     """
     Calculate the angle between three points
@@ -35,7 +35,7 @@ def calculate_angle(point1, point2, point3):
     vector2 = point3 - point2
     
     cosine_angle = np.dot(vector1, vector2) / (np.linalg.norm(vector1) * np.linalg.norm(vector2))
-    cosine_angle = np.clip(cosine_angle, -1.0, 1.0)  # Ensure the cosine value is within the valid range
+    cosine_angle = np.clip(cosine_angle, -1.0, 1.0) 
     
     angle = np.arccos(cosine_angle)
     angle = np.degrees(angle)  # Convert to degrees
@@ -86,6 +86,7 @@ if __name__ == '__main__':
             recognizer.adjust_for_ambient_noise(source)  # Reduce background noise
             while True:
                 try:
+                    # adjust phrase time limit depending on our duration of speech
                     audio = recognizer.listen(source, phrase_time_limit=8)  # Listen for speech
                     subtitle_text = recognizer.recognize_google(audio)  # Convert speech to text
                 except sr.UnknownValueError:
