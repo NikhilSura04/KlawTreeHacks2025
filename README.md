@@ -1,5 +1,5 @@
 # KlawTreeHacks2025
-Seamless laptop control through hand gestures, facial expressions, and voice recognition, allowing users to navigate without a keyboard or mouse
+Klaw is an accessibility tool that enables seamless laptop interaction through hand gestures, facial expressions, and voice recognition, empowering individuals with mobility and speech challenges. 
 
 ## Inspiration
 Klaw was inspired by the need for more intuitive, hands-free ways to interact with technology, especially for individuals with mobility or speech impairments.  As technology becomes increasingly integrated into daily life, traditional input methods like keyboards and mice are sometimes insufficient for the nuanced interactions that modern applications demand. We wanted to create an accessibility tool that bridges the gap between users and their devices, allowing the former to take a more relaxed, agile approach towards making the most of their laptops.
