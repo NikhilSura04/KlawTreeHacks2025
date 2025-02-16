@@ -88,7 +88,7 @@ if __name__ == '__main__':
             recognizer.adjust_for_ambient_noise(source)  # Reduce background noise
             while True:
                 try:
-                    audio = recognizer.listen(source, phrase_time_limit=5)  # Listen for speech
+                    audio = recognizer.listen(source, phrase_time_limit=8)  # Listen for speech
                     subtitle_text = recognizer.recognize_google(audio)  # Convert speech to text
                 except sr.UnknownValueError:
                     subtitle_text = "..."
@@ -141,6 +141,58 @@ if __name__ == '__main__':
 
         SCREEN_WIDTH, SCREEN_HEIGHT = pyautogui.size()  # Get screen resolution
         
+
+        HEAD_TILT_THRESHOLD = 0.02
+
+        # Face tracking
+        if results_face.multi_face_landmarks:
+            for face_landmarks in results_face.multi_face_landmarks:
+                FACE_LANDMARKS = face_landmarks.landmark
+
+                # smile deteection, may have to change threshold values
+                left_mouth = FACE_LANDMARKS[61]  # Left corner of the mouth
+                right_mouth = FACE_LANDMARKS[291]  # Right corner of the mouth
+                top_lip = FACE_LANDMARKS[13]  # Upper lip
+                bottom_lip = FACE_LANDMARKS[14]  # Lower lip
+                left_ear = FACE_LANDMARKS[234]  # Left ear
+                right_ear = FACE_LANDMARKS[454]  # Right ear
+
+                tilt_value = left_ear.y - right_ear.y
+
+                if tilt_value > HEAD_TILT_THRESHOLD:
+                    pyautogui.press("volumeup")
+                elif tilt_value < -HEAD_TILT_THRESHOLD:
+                    pyautogui.press("volumedown")
+
+                # Calculate distances
+                mouth_width = abs(right_mouth.x - left_mouth.x)
+                mouth_height = abs(top_lip.y - bottom_lip.y)
+
+                # **2️⃣ Eyebrow Raise Detection**
+                left_eyebrow = FACE_LANDMARKS[70]  # Left eyebrow middle
+                right_eyebrow = FACE_LANDMARKS[300]  # Right eyebrow middle
+                left_eye_top = FACE_LANDMARKS[159]  # Top of left eye
+                right_eye_top = FACE_LANDMARKS[386]  # Top of right eye
+
+                # Calculate distances between eyebrows and eyes
+                left_brow_eye_distance = abs(left_eyebrow.y - left_eye_top.y)
+                right_brow_eye_distance = abs(right_eyebrow.y - right_eye_top.y)
+
+                # If the eyebrows are raised significantly, trigger the effect
+                if left_brow_eye_distance > 0.05 and right_brow_eye_distance > 0.05:  # Adjust threshold
+                    face_info = "Eyebrow Raise"
+                
+                drawing_spec = mp.solutions.drawing_utils.DrawingSpec(color=(0, 255, 0), thickness=1, circle_radius=1)
+
+                # Draw only face contours (removes excessive landmark clutter)
+                mp_drawing.draw_landmarks(
+                    image,
+                    face_landmarks,
+                    mp.solutions.face_mesh.FACEMESH_CONTOURS,
+                    drawing_spec,  # Apply custom drawing spec
+                    drawing_spec
+                )
+
         # Convert the image from BGR to RGB, rotate and flip for correct orientation
         image = cv2.cvtColor(np.rot90(image), cv2.COLOR_BGR2RGB)
         image = pygame.surfarray.make_surface(image)
