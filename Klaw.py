@@ -44,9 +44,7 @@ def calculate_angle(point1, point2, point3):
 
 parser = argparse.ArgumentParser()
 parser.add_argument("--gesture", help="Gesture to be recorded", type=str, default=None)
-parser.add_argument("--knn", help="Filename of pickled KNN", type=str, default=None)
 parser.add_argument("--data_dir", help="Directory to save data to", type=str, default=None)
-parser.add_argument("--port", help="Port for Arduino connection", type=str, default=None)
 args = parser.parse_args()
 
 # Establish serial connection if a port is specified
@@ -156,7 +154,7 @@ if __name__ == '__main__':
                 # Move the mouse cursor smoothly
                 pyautogui.moveTo(screen_x, screen_y, duration=0.1)
 
-                # Calculate distance between index tip and thumb tip for clicking
+                # Calculate distance between index tip and thumb tip for clickin
                 distance = np.linalg.norm(
                     np.array([index_tip.x, index_tip.y]) - np.array([thumb_tip.x, thumb_tip.y])
                 )
@@ -215,7 +213,7 @@ if __name__ == '__main__':
                 
                 drawing_spec = mp.solutions.drawing_utils.DrawingSpec(color=(0, 255, 0), thickness=1, circle_radius=1)
 
-                # Draw only face contours (removes excessive landmark clutter)
+                # Draw only face contours
                 mp_drawing.draw_landmarks(
                     image,
                     face_landmarks,
