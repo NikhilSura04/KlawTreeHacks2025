@@ -7,34 +7,43 @@ Klaw was inspired by the need for more intuitive, hands-free ways to interact wi
 ## What it does
 Klaw enables seamless laptop control through hand gestures, facial expressions, and voice recognition, allowing users to navigate without a keyboard or mouse. It specifically supports features like gesture-based clicking, head-tilt volume control, and real-time speech-to-text captions.
 
--Hand Gesture Control: Move your cursor by pointing with your index finger, perform clicks by pinching your fingers together, and navigate with swipe gestures.
+Hand Gesture Control: Move your cursor by pointing with your index finger, perform clicks by pinching your fingers together, and navigate with swipe gestures.
 
--Facial Expression Detection: Tilt your head left or right to adjust volume, raise your eyebrows to trigger actions, or smile to confirm selections.
+Facial Expression Detection: Tilt your head left or right to adjust volume, raise your eyebrows to trigger actions, or smile to confirm selections.
 
--Real-Time Speech-to-Text: Converts spoken words into live subtitles, aiding users with speech impairments or those in environments where typing is difficult.
+Real-Time Speech-to-Text: Converts spoken words into live subtitles, aiding users with speech impairments or those in environments where typing is difficult.
 
--Accessible Interaction: Klaw eliminates the need for a physical mouse or keyboard, making laptops more accessible for users with limited mobility.
+Accessible Interaction: Klaw eliminates the need for a physical mouse or keyboard, making laptops more accessible for users with limited mobility.
 
 ## How we built it
 We used Google MediaPipe for hand and face tracking, OpenCV for image processing, SpeechRecognition for real-time subtitles, Numpy for the joint angle calculations, and Pygame to render the test interface. The project was entirely done in Python. 
 
 ## Challenges we ran into
--Fine-tuning gesture detection to avoid false positives.
--Handling speech recognition delays and improving accuracy in noisy environments.
--Preventing over-sensitive cursor clicking when user pinches.
--Integrating the real-time angle calculations into the PyGame simulation
+Fine-tuning gesture detection to avoid false positives.
+
+Handling speech recognition delays and improving accuracy in noisy environments.
+
+Preventing over-sensitive cursor clicking when user pinches.
+
+Integrating the real-time angle calculations into the PyGame simulation
 
 ## Accomplishments that we're proud of
--Successfully integrating multi-modal input (gesture, face, and voice) into a single tool.
--Improving gesture accuracy for seamless, hands-free control.
--Making an accessible and already functional prototype that can genuinely help users right away.
+Successfully integrating multi-modal input (gesture, face, and voice) into a single tool.
+
+Improving gesture accuracy for seamless, hands-free control.
+
+Making an accessible and already functional prototype that can genuinely help users right away.
 
 ## What we learned
-- How to apply CV libraries in order to track body movements
-- How to fine-tune thresholds for gesture recognition to balance sensitivity with accuracy
-- Challenges in live speech-to-text processing and how to improve clarity
+How to apply CV libraries in order to track body movements
+  
+How to fine-tune thresholds for gesture recognition to balance sensitivity with accuracy
+  
+Challenges in live speech-to-text processing and how to improve clarity
 
 ## What's next for Klaw
-- Some type of customizable gestures for more personalized controls
-- Machine learning enhancements to improve speech-to-text accuracy
-- Less sensitive mouse controls
+Some type of customizable gestures for more personalized controls
+
+Machine learning enhancements to improve speech-to-text accuracy
+
+Less sensitive mouse controls
