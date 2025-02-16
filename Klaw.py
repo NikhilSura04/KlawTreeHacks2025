@@ -140,6 +140,37 @@ if __name__ == '__main__':
                     mp_drawing_styles.get_default_hand_connections_style())
 
         SCREEN_WIDTH, SCREEN_HEIGHT = pyautogui.size()  # Get screen resolution
+
+        CLICK_DELAY = 0.5  # Time in seconds to prevent multiple clicks (adjust as needed)
+        last_click_time = 0  # Initialize last click timestamp
+        if results_hands.multi_hand_landmarks:
+            for hand_landmarks in results_hands.multi_hand_landmarks:
+                # Get index finger tip coordinates
+                index_tip = hand_landmarks.landmark[mp_hands.HandLandmark.INDEX_FINGER_TIP]
+                thumb_tip = hand_landmarks.landmark[mp_hands.HandLandmark.THUMB_TIP]
+
+                # Flip X-coordinates for natural movement
+                screen_x = SCREEN_WIDTH - (index_tip.x * SCREEN_WIDTH)
+                screen_y = index_tip.y * SCREEN_HEIGHT  # Keep Y-axis the same
+
+                # Move the mouse cursor smoothly
+                pyautogui.moveTo(screen_x, screen_y, duration=0.1)
+
+                # Calculate distance between index tip and thumb tip for clicking
+                distance = np.linalg.norm(
+                    np.array([index_tip.x, index_tip.y]) - np.array([thumb_tip.x, thumb_tip.y])
+                )
+                
+                if index_tip.y < 0.4:  # Move hand up
+                    pyautogui.scroll(10)  # Scroll up
+                elif index_tip.y > 0.6:  # Move hand down
+                    pyautogui.scroll(-10)  # Scroll down
+
+                current_time = time.time()
+                # If fingers are close enough, trigger a mouse click
+                if distance < 0.05:  # Adjust threshold as needed
+                    pyautogui.click()
+                    last_click_time = current_time
         
 
         HEAD_TILT_THRESHOLD = 0.02
