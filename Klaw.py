@@ -190,14 +190,13 @@ if __name__ == '__main__':
 
                 if tilt_value > HEAD_TILT_THRESHOLD:
                     pyautogui.press("volumeup")
-                elif tilt_value < -HEAD_TILT_THRESHOLD:
+                elif tilt_value < -(HEAD_TILT_THRESHOLD):
                     pyautogui.press("volumedown")
 
                 # Calculate distances
                 mouth_width = abs(right_mouth.x - left_mouth.x)
                 mouth_height = abs(top_lip.y - bottom_lip.y)
 
-                # **2️⃣ Eyebrow Raise Detection**
                 left_eyebrow = FACE_LANDMARKS[70]  # Left eyebrow middle
                 right_eyebrow = FACE_LANDMARKS[300]  # Right eyebrow middle
                 left_eye_top = FACE_LANDMARKS[159]  # Top of left eye
