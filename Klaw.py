@@ -2,6 +2,7 @@
 # Rishi Bengani
 # TreeHacks 2025
 
+
 import pygame
 import cv2
 import mediapipe as mp
@@ -80,6 +81,23 @@ if __name__ == '__main__':
     recognizer = sr.Recognizer()
     subtitle_text = ""  # Store recognized text
 
+    def recognize_speech():
+        """Continuously listens for speech and updates subtitle_text."""
+        global subtitle_text
+        with sr.Microphone() as source:
+            recognizer.adjust_for_ambient_noise(source)  # Reduce background noise
+            while True:
+                try:
+                    audio = recognizer.listen(source, phrase_time_limit=5)  # Listen for speech
+                    subtitle_text = recognizer.recognize_google(audio)  # Convert speech to text
+                except sr.UnknownValueError:
+                    subtitle_text = "..."
+                except sr.RequestError:
+                    subtitle_text = "Speech recognition unavailable"
+
+    # Run speech recognition in a separate thread to avoid blocking Pygame
+    speech_thread = threading.Thread(target=recognize_speech, daemon=True)
+    speech_thread.start()
     while cap.isOpened():
         clock.tick(60)
         success, image = cap.read()
@@ -122,36 +140,6 @@ if __name__ == '__main__':
                     mp_drawing_styles.get_default_hand_connections_style())
 
         SCREEN_WIDTH, SCREEN_HEIGHT = pyautogui.size()  # Get screen resolution
-
-        if results_hands.multi_hand_landmarks:
-            for hand_landmarks in results_hands.multi_hand_landmarks:
-                # Get index finger tip coordinates
-                index_tip = hand_landmarks.landmark[mp_hands.HandLandmark.INDEX_FINGER_TIP]
-                thumb_tip = hand_landmarks.landmark[mp_hands.HandLandmark.THUMB_TIP]
-
-                # Flip X-coordinates for natural movement
-                screen_x = SCREEN_WIDTH - (index_tip.x * SCREEN_WIDTH)
-                screen_y = index_tip.y * SCREEN_HEIGHT  # Keep Y-axis the same
-
-                # Move the mouse cursor smoothly
-                pyautogui.moveTo(screen_x, screen_y, duration=0.1)
-
-                # Calculate distance between index tip and thumb tip for clicking
-                distance = np.linalg.norm(
-                    np.array([index_tip.x, index_tip.y]) - np.array([thumb_tip.x, thumb_tip.y])
-                )
-                
-                if index_tip.y < 0.4:  # Move hand up
-                    pyautogui.scroll(10)  # Scroll up
-                elif index_tip.y > 0.6:  # Move hand down
-                    pyautogui.scroll(-10)  # Scroll down
-
-                current_time = time.time()
-                # If fingers are close enough, trigger a mouse click
-                if distance < 0.05:  # Adjust threshold as needed
-                    pyautogui.click()
-                    last_click_time = current_time
-
         
         # Convert the image from BGR to RGB, rotate and flip for correct orientation
         image = cv2.cvtColor(np.rot90(image), cv2.COLOR_BGR2RGB)
